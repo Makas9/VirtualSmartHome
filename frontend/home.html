@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Virtual Smart Home</title>
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="main">
+
+        <!-- MAIN MENU -->
+
+        <div id="page-menu">
+            <div class="main-container row">
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('rooms');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Room Selection</span>
+                    </div>
+                </div>
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('settings');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Settings</span>
+                    </div>
+                </div>
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('admin');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Admin Panel</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="container center">
+                <a id="logout-button" class="waves-effect waves-light btn btn-margin blue">Logout</a>
+            </div>
+        </div>
+
+        <!-- ROOMS -->
+
+        <div id="page-rooms" style="display: none;">
+            <div class="main-container row">
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('room');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Kitchen</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('menu');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-room" style="display: none;">
+            <div class="main-container">
+
+                <ul class="collection with-header">
+                    <li class="collection-header"><h4>(Room) Devices</h4></li>
+                    <li class="collection-item"><div>Lamp<a href="#" class="secondary-content">
+                        <div id="room_deviceID" class="switch">
+                            <label>
+                                Off
+                                <input type="checkbox">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                    </a></div></li>
+                    <li class="collection-item"><div>Temperature sensor<a href="#" class="secondary-content">25.5 °C</a></div></li>
+                </ul>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('rooms');">Back</a>
+            </div>
+        </div>
+
+        <!-- SETTINGS -->
+
+        <div id="page-settings" style="display: none;">
+            <div class="main-container row">
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('password');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Change Password</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('menu');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-password" style="display: none;">
+            <div class="main-container block center">
+
+                <h5 class="center">Change Password</h5>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="cpassword" type="password" class="validate">
+                        <label for="cpassword">Password</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="cpassword2" type="password" class="validate">
+                        <label for="cpassword2">Repeat Password</label>
+                    </div>
+                </div>
+
+                <a class="waves-effect waves-light btn btn-margin">Change</a>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('settings');">Back</a>
+            </div>
+        </div>
+
+        <!-- ADMIN PANEL -->
+
+        <div id="page-admin" style="display: none;">
+            <div class="main-container row">
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('admin-rooms');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Edit Rooms</span>
+                    </div>
+                </div>
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('admin-users');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Edit Users</span>
+                    </div>
+                </div>
+
+                <div class="item-container col s2">
+                    <div onclick="loadPage('admin-devices');" class="card-panel blue lighten-2 center">
+                        <span class="white-text">Edit Devices</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('menu');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-admin-rooms" style="display: none;">
+            <div class="main-container">
+
+                <ul class="collection with-header">
+                    <li class="collection-header"><h4>Rooms</h4></li>
+                    <li class="collection-item"><div>? room<a href="#" class="secondary-content">delete</a></div></li>
+                    <li class="collection-item"><div>? room<a href="#" class="secondary-content">delete</a></div></li>
+                    <li class="collection-item"><div><a href="#" onclick="loadPage('admin-rooms-new');">add new room</a></div></li>
+                </ul>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('admin');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-admin-rooms-new" style="display: none;">
+            <div class="main-container block center">
+
+                <h5 class="center">Add New Room</h5>
+
+                <div class="row mini">
+                    <div class="input-field col s12">
+                        <input id="new_room_name" type="text" class="validate">
+                        <label for="new_room_name">Room Name</label>
+                    </div>
+                </div>
+
+                <a class="waves-effect waves-light btn btn-margin">Add</a>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('admin-rooms');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-admin-users" style="display: none;">
+            <div class="main-container">
+
+                <ul class="collection with-header">
+                    <li class="collection-header"><h4>Users</h4></li>
+                    <li class="collection-item"><div>user1<a href="#" class="secondary-content">delete</a></div></li>
+                    <li class="collection-item"><div>user2<a href="#" class="secondary-content">delete</a></div></li>
+                    <li class="collection-item"><div><a href="#" onclick="loadPage('admin-users-new');">add new user</a></div></li>
+                </ul>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('admin');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-admin-users-new" style="display: none;">
+            <div class="main-container block center">
+
+                <h5 class="center">Add New User</h5>
+
+                <div class="row mini">
+                    <div class="input-field col s12">
+                        <input id="new_user_name" type="text" class="validate">
+                        <label for="new_user_name">Username</label>
+                    </div>
+                </div>
+
+                <div class="row mini">
+                    <div class="input-field col s12">
+                        <input id="new_user_password" type="password" class="validate">
+                        <label for="new_user_password">Password</label>
+                    </div>
+                </div>
+
+                <a class="waves-effect waves-light btn btn-margin">Add</a>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('admin-users');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-admin-devices" style="display: none;">
+            <div class="main-container">
+
+                <ul class="collection with-header">
+                    <li class="collection-header"><h4>Devices</h4></li>
+                    <li class="collection-item"><div>device1<a href="#" class="secondary-content">delete</a></div></li>
+                    <li class="collection-item"><div>device2<a href="#" class="secondary-content">delete</a></div></li>
+                    <li class="collection-item"><div><a href="#" onclick="loadPage('admin-devices-new');">add new device</a></div></li>
+                </ul>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('admin');">Back</a>
+            </div>
+        </div>
+
+        <div id="page-admin-devices-new" style="display: none;">
+            <div class="main-container block center">
+
+                <h5 class="center">Add New Device</h5>
+
+                <div class="row mini">
+                    <div class="input-field col s12">
+                        <input id="new_device_name" type="text" class="validate">
+                        <label for="new_device_name">Device Name</label>
+                    </div>
+                </div>
+
+                <a class="waves-effect waves-light btn btn-margin">Add</a>
+
+            </div>
+            <div class="container center back">
+                <a href="#" onclick="loadPage('admin-devices');">Back</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/websockets.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById("logout-button").addEventListener("click", logoutUser);
+    </script>
+</body>
+</html>

@@ -14,7 +14,7 @@ namespace SmartHome.Controllers
     {
 
         public const string _Username = "null";
-        public const string _Role = "null";
+        public const string _UserID = "null";
 
         public ActionResult Index()
         {
@@ -27,13 +27,13 @@ namespace SmartHome.Controllers
             string Username = User.Username;
             string Password = User.Password;
 
+            // Check if data is correct, then set session and redirect TODO
             bool loggedIn = true;
             if (loggedIn)
             {
-                HttpContext.Session.SetString(_Username, "Username");
-                HttpContext.Session.SetString(_Role, "Roles");
+                HttpContext.Session.SetInt32(_UserID, 10); // Save UserID in session TODO
+
                 return Redirect("../LoggedIn/Index");
-                //return View("../LoggedIn/Index");
             }
 
             return View();

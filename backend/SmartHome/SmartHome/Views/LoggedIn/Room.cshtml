@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Room";
+}
+
+    <h1>Room (@ViewData["RoomID"])</h1>
+
+<a asp-area="" asp-controller="LoggedIn" asp-action="DeviceNew">New Device</a>
+<br />
+<ul class="list-group">
+    <li class="list-group-item">Item <span class="badge" style="float: right;"><div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" id="customSwitch1"><label class="custom-control-label" for="customSwitch1"></label></div></span></li>
+    <li class="list-group-item">Item <span class="badge" style="float: right;"><div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" id="customSwitch2" checked><label class="custom-control-label" for="customSwitch2"></label></div></span></li>
+    <li class="list-group-item">Item <span class="badge" style="float: right;"><div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" id="customSwitch3" checked><label class="custom-control-label" for="customSwitch3"></label></div></span></li>
+</ul>

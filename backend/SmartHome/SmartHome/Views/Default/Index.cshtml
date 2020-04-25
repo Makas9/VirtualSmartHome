@@ -1,0 +1,32 @@
+﻿@model SmartHome.Models.UserModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+@using (Html.BeginForm())
+{
+    <div class="bs-example" style="border:2px solid gray;">
+
+        <div class="form-group centerlook">
+            <h1> Login </h1>
+        </div>
+        <div class="form-group centerlook">
+            <label>User Name: </label>
+            @Html.EditorFor(model => model.Username)*
+            @Html.ValidationMessageFor(model => model.Username)
+        </div>
+        <div class="form-group centerlook">
+            <label>Password:</label>
+            @Html.EditorFor(model => model.Password) *
+            @Html.ValidationMessageFor(model => model.Password)
+
+        </div>
+        <div class="loginbtn">
+
+            <input type="submit" value="Login" class="btn btn-primary" />
+
+        </div>
+    </div>
+}  

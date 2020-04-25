@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\SmartHome",
+    "\\backend\\SmartHome\\SmartHome",
+    "\\frontend"
+  ],
+  "SelectedNode": "\\backend\\SmartHome\\SmartHome\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}

@@ -10,7 +10,7 @@ using SmartHome.Models;
 
 namespace SmartHome.Controllers
 {
-    public class LoggedInController : DefaultController
+    public class LoggedInController : Controller
     {
 
         public ActionResult Index()
@@ -18,7 +18,7 @@ namespace SmartHome.Controllers
             //ViewBag.Username = HttpContext.Session.GetString(_Username);
             ViewData["test"] = "Hello";
 
-            return View(ViewData);
+            return View();
         }
     }
 }

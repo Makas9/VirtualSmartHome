@@ -32,7 +32,8 @@ namespace SmartHome.Controllers
             {
                 HttpContext.Session.SetString(_Username, "Username");
                 HttpContext.Session.SetString(_Role, "Roles");
-                return View("../LoggedIn/Index");
+                return Redirect("../LoggedIn/Index");
+                //return View("../LoggedIn/Index");
             }
 
             return View();

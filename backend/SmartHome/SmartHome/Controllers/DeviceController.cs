@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using SmartHome.Models;
 
 namespace SmartHome.Controllers
-{ // cia del reference
+{ 
     public class DeviceController : Controller
     {
         public ActionResult RoomDeviceList()

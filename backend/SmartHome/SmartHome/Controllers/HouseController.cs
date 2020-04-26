@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmartHome.Controllers
-{
+{// cia del reference
     public class HouseController : Controller
     {
         private readonly SmartHomeDbContext _context;

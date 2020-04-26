@@ -61,7 +61,7 @@ namespace SmartHome
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Default}/{action=Index}/{id?}");
+                    pattern: "{controller=User}/{action=UserLogin}/{id?}");
             });
         }
     }

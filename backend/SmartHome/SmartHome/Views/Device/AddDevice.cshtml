@@ -1,0 +1,24 @@
+﻿@model SmartHome.Models.Device
+@{
+    ViewData["Title"] = "AddDevice";
+}
+
+<h1>AddDevice</h1>
+
+@using (Html.BeginForm())
+{
+    <form class="text-center border border-light p-5" action="#!">
+        @Html.TextBoxFor(model => model.RoomId, new { @Value = @ViewData["RoomID"] })
+
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control mb-4", @type = "text", @placeholder = "Name..." } })
+        @Html.ValidationMessageFor(model => model.Name)
+
+        @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @class = "form-control mb-4", @type = "text", @placeholder = "Model..." } })
+        @Html.ValidationMessageFor(model => model.Model)
+
+        <div>
+            <input type="submit" value="Add" class="btn btn-primary" />
+        </div>
+
+    </form>
+}

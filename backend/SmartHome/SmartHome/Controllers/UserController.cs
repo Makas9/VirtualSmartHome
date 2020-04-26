@@ -10,7 +10,7 @@ using SmartHome.Models;
 
 namespace SmartHome.Controllers
 {
-    public class UsersController : Controller
+    public class UserController : Controller
     {
 
         public const string _Username = "null";

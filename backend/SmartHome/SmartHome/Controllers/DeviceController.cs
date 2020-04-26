@@ -10,7 +10,7 @@ using SmartHome.Models;
 
 namespace SmartHome.Controllers
 {
-    public class DevicesController : Controller
+    public class DeviceController : Controller
     {
         public ActionResult RoomDeviceList()
         {

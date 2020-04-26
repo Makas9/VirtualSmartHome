@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SmartHome.Controllers
 {
-    public class HousesController : Controller
+    public class HouseController : Controller
     {
         private readonly SmartHomeDbContext _context;
 
-        public HousesController(SmartHomeDbContext context)
+        public HouseController(SmartHomeDbContext context)
         {
             _context = context;
         }

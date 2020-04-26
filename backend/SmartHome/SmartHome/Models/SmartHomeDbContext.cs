@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartHome.Models
 {
-    public class SmartHomeDbContext : IdentityDbContext
+    public class SmartHomeDbContext : DbContext
     {
         public DbSet<UserModel> Users { get; set; }
         public DbSet<House> Houses { get; set; }

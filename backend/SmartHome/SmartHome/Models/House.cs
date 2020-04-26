@@ -9,9 +9,10 @@ namespace SmartHome.Models
 {
     public class House
     {
+#nullable enable
         [Key]
         public int Id { get; set; }
-        public string Address { get; set; }
+        public string? Address { get; set; }
         [Required]
         [ForeignKey("Owner")]
         public int OwnerId { get; set; }

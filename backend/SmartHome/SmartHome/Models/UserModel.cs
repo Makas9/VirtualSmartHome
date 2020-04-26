@@ -8,6 +8,7 @@ namespace SmartHome.Models
 {
     public class UserModel
     {
+#nullable enable
         [Key]
         public int Id { get; set; }
         [Required]
@@ -19,7 +20,7 @@ namespace SmartHome.Models
         public UserType Type { get; set; }
 
 
-        public int ResidenceId { get; set; }
+        public int? ResidenceId { get; set; }
         public House Residence { get; set; }
 
         [InverseProperty("Owner")]

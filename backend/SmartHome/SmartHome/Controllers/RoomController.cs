@@ -11,7 +11,7 @@ using SmartHome.Models;
 
 namespace SmartHome.Controllers
 {
-    public class RoomsController : Controller
+    public class RoomController : Controller
     {
         private readonly SmartHomeDbContext _context;
 

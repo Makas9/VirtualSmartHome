@@ -20,7 +20,7 @@ namespace SmartHome.Controllers
             _context = context;
         }
 
-        [HttpGet("Room/RoomList")]
+
         public ActionResult RoomList()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");

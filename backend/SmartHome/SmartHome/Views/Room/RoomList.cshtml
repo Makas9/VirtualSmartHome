@@ -20,9 +20,9 @@
             <tr>
                 <th scope="row">@Html.DisplayFor(roomItem => room.Name)</th>
                 <td style="text-align: right;">
-                    <a asp-area="" asp-controller="Room" asp-action="Details" asp-route-id="10">select</a> |
-                    <a asp-area="" asp-controller="Room" asp-action="RoomEdit" asp-route-id="10" disabled>update</a> |
-                    <a asp-area="" asp-controller="Room" asp-action="Delete" asp-route-id="10" disabled>delete</a>
+                    <a asp-controller="Device" asp-action="RoomDeviceList" asp-route-id="@room.Id">room device list</a>|
+                    <a asp-controller="Room" asp-action="RoomEdit" asp-route-id="@room.Id" disabled>update</a> |
+                    <a asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" disabled>delete</a>
                 </td>
             </tr>
         }

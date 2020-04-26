@@ -44,13 +44,13 @@ namespace SmartHome.Controllers
             return View();
         }
 
-        public List<Room> GetRoomList()
+        public IEnumerable<Room> GetRoomList()
         {
-            var smartHomeDbContext = _context.Rooms.Include(r => r.House);
+            var smartHomeDbContext = _context.Rooms.Include(r => r.House).ToList();
 
             // todo: kai bus vartotojas atrinkt pagal prisijungusio vartotojo namus
 
-            return smartHomeDbContext.ToList();
+            return smartHomeDbContext;
         }
 
         public ActionResult OpenRoomAddWindow()

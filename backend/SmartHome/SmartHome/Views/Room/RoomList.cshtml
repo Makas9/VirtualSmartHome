@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "RoomList";
+}
+
+<h1>RoomList</h1>
+
+<a asp-area="" asp-controller="Room" asp-action="OpenRoomAddWindow">New Room</a>
+<br />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Room</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">Kitchen</th>
+            <td style="text-align: right;">
+                <a asp-area="" asp-controller="Device" asp-action="RoomDeviceList" asp-route-id="10">select</a> |
+                <a asp-area="" asp-controller="Room" asp-action="RoomEdit" asp-route-id="10">edit</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -4,21 +4,23 @@
 }
 
 <h1>New Room</h1>
+@ViewData["bool"]
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("CreateRoom", "room", FormMethod.Post))
 {
-    <form asp-action="CreateRoom" class="text-center border border-light p-5">
+<form class="text-center border border-light p-5">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control mb-4", @type = "text", @placeholder = "Room name..." } })
-        @Html.ValidationMessageFor(model => model.Name)
 
-        @Html.EditorFor(model => model.HouseId, new { htmlAttributes = new { @class = "form-control mb-4", @type = "number", @placeholder = "HouseID..." } })
-        @Html.ValidationMessageFor(model => model.HouseId)
+    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control mb-4", @type = "text", @placeholder = "Room name..." } })
+    @Html.ValidationMessageFor(model => model.Name)
 
-        <div>
-            <input type="submit" value="Add" class="btn btn-primary" />
-        </div>
+    @*@Html.EditorFor(model => model.HouseId, new { htmlAttributes = new { @class = "form-control mb-4", @type = "number", @placeholder = "HouseID..." } })-->
+    @Html.ValidationMessageFor(model => model.HouseId)*@
 
-    </form>
+    <div>
+        <input type="submit" value="Add" class="btn btn-primary" />
+    </div>
+
+</form>
 }

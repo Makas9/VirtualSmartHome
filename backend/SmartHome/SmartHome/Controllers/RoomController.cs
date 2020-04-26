@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SmartHome.Models;
@@ -61,28 +62,24 @@ namespace SmartHome.Controllers
 
         public bool ValidateRoomData(Room roomData)
         {
-            if (!TryValidateModel(roomData, nameof(roomData)))
-            {
-                return false;
-            }
-
-            return true;
+            return ModelState.IsValid;
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateRoom([Bind("Id,Title,ImagePath,Points,DateCreated,FkCategory")] Room room)
+        public async Task<IActionResult> CreateRoom([Bind("Id","Name","HouseId")] Room room)
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
 
-            if(!ValidateRoomData(room))
+            room.HouseId = 1; // Pridedam prie pirmo namo del demo
+            if(ValidateRoomData(room))
             {
-                return View("RoomAdd", room);
+                _context.Add(room);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(RoomList));
             }
 
-            _context.Add(room);
-                
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(RoomList));
+            
+            return View("RoomAdd", room);
         }
     }
 }

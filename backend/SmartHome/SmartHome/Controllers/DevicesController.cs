@@ -10,63 +10,69 @@ using SmartHome.Models;
 
 namespace SmartHome.Controllers
 {
-    public class RoomController : Controller
+    public class DevicesController : Controller
     {
-        public ActionResult RoomList()
+        public ActionResult RoomDeviceList()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
-        public ActionResult RoomAdd()
+        public ActionResult AddDevice()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
-        public ActionResult RoomEdit()
+        public ActionResult DeviceSystemComm()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
-        public Room GetRoomList()
+        public void GetDevicesOfRoom(int RoomID)
         {
-            Room room = new Room();
-
             // TODO
-
-            return room;
         }
 
-        public ActionResult OpenRoomAddWindow()
+        public ActionResult OpenAddDeviceWindow()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
 
-            return View("RoomAdd");
+            return View("AddDevice");
         }
 
-        public bool ValidateRoomData(Room roomData)
+        public void AddDevice(Device deviceData)
         {
-            bool validated = false;
-
-            // Validation
-
-            return validated;
+            // TODO
         }
 
-        [HttpPost]
-        public ActionResult CreateRoom(Room roomData)
+        public void ValidateDeviceData(Device deviceData)
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            // TODO
+        }
 
-            // Validation
-            bool validated = ValidateRoomData(roomData);
+        public void OpenAddScenarioWindow()
+        {
+            // TODO
+        }
 
-            return View("RoomList");
+        public void TurnOn(int deviceID)
+        {
+            // TODO
+        }
+
+        public void TurnOff(int deviceID)
+        {
+            // TODO
+        }
+
+        public void Log()
+        {
+            // TODO
         }
     }
 }

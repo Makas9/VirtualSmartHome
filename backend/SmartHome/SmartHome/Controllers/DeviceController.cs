@@ -27,9 +27,11 @@ namespace SmartHome.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddDevice()
+        [ValidateAntiForgeryToken]
+        public ActionResult AddDevice(int? roomID, [Bind("Id,IpAddress,Port,RoomId")] Device device)
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+
 
             return View();
         }
@@ -73,9 +75,9 @@ namespace SmartHome.Controllers
             // TODO
         }
 
-        public void ValidateDeviceData(Device deviceData)
+        public bool ValidateDeviceData(Device deviceData)
         {
-            // TODO
+            return ModelState.IsValid;
         }
 
         public void OpenAddScenarioWindow()

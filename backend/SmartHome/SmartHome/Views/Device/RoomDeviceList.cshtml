@@ -5,7 +5,7 @@
 
 <h1>Room Device List</h1>
 
-<a asp-area="" asp-controller="Device" asp-action="OpenAddDeviceWindow">New Device</a> | <a asp-area="" asp-controller="Scenario" asp-action="AddScenario">New Scenario</a>
+<a asp-controller="Device" asp-action="OpenAddDeviceWindow">New Device</a> | <a asp-controller="Scenario" asp-action="AddScenario">New Scenario</a>
 <br />
 <ul class="list-group">
     @foreach (var device in Model)
@@ -16,12 +16,12 @@
                 <div class="custom-control custom-switch">
                     @if (device.State == DeviceState.Off)
                     {
-                        <input type="checkbox" class="custom-control-input" id="customSwitch1"> @* reikia sutvarkyt switchus *@
+                        <input type="checkbox" name="DeviceState" class="custom-control-input" value="@device.Id"> @* not sure ar cia teisingai *@
                         <label class="custom-control-label" for="customSwitch1"></label>
                     }
                     else if (device.State == DeviceState.On)
                     {
-                        <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+                        <input type="checkbox" name="DeviceState" class="custom-control-input" value="@device.Id" checked>
                         <label class="custom-control-label" for="customSwitch1"></label>
                     }
                     else

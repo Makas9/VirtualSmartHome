@@ -14,21 +14,21 @@ namespace SmartHome.Controllers
     {
         public ActionResult RoomDeviceList()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
         public ActionResult AddDevice()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
         public ActionResult DeviceSystemComm()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
@@ -40,7 +40,7 @@ namespace SmartHome.Controllers
 
         public ActionResult OpenAddDeviceWindow()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View("AddDevice");
         }

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SmartHome.Models;
+using SmartHome.ViewModels;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmartHome.Controllers
 {
@@ -28,14 +27,21 @@ namespace SmartHome.Controllers
         // GET: Houses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var viewModel = new HouseDetailsViewModel();
+
+            //viewModel.Rooms = await _context.Houses.Include(i => i.Rooms)
             if (id == null)
             {
                 return NotFound();
             }
 
+            //var house = await _context.Houses.Where(h => h.Id == id).FirstOrDefault()
+
             var house = await _context.Houses
                 .Include(h => h.Owner)
+                .Include(h => h.Rooms)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (house == null)
             {
                 return NotFound();

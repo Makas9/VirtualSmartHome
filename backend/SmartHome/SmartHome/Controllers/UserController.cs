@@ -41,35 +41,35 @@ namespace SmartHome.Controllers
 
         public ActionResult Home()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
         public ActionResult Logout()
         {
-            HttpContext.Session.SetInt32(UserController._UserID, -1);
+            HttpContext.Session.SetInt32(UsersController._UserID, -1);
 
             return Redirect("../User/UserLogin");
         }
 
         public ActionResult UserAssignDevices()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
         public ActionResult UserAdd()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }
 
         public ActionResult UserList()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }

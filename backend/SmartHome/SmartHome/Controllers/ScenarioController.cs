@@ -14,7 +14,7 @@ namespace SmartHome.Controllers
     {
         public ActionResult AddScenario()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UsersController._UserID) < 0) return Redirect("../User/UserLogin");
 
             return View();
         }

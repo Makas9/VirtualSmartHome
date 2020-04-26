@@ -12,6 +12,7 @@ namespace SmartHome.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
+        [Required]
         public int HouseId { get; set; }
         public House House { get; set; }
         [InverseProperty("Room")]

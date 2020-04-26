@@ -9,13 +9,19 @@ namespace SmartHome.Models
 {
     public class Device
     {
+#nullable enable
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Model { get; set; }
-        public double Value { get; set; }
-        public DeviceType Type { get; set; }
-        public DeviceState State { get; set; }
+        public string? Name { get; set; }
+        public string? Model { get; set; }
+        public double? Value { get; set; }
+        public DeviceType? Type { get; set; }
+        public DeviceState? State { get; set; }
+        [Required]
+        [StringLength(15, MinimumLength = 7)]
+        public string  IpAddress { get; set; }
+        [Required]
+        public int Port { get; set; }
         [Required]
         public int RoomId { get; set; }
         public Room Room { get; set; }

@@ -12,6 +12,7 @@ namespace SmartHome.Models
 #nullable enable
         [Key]
         public int Id { get; set; }
+        [StringLength(100, MinimumLength = 1)]
         public string? Address { get; set; }
         [Required]
         [ForeignKey("Owner")]

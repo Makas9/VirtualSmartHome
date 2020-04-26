@@ -26,6 +26,7 @@ namespace SmartHome.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult AddDevice()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");

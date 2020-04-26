@@ -6,7 +6,7 @@
 <h1>New Room</h1>
 @ViewData["bool"]
 
-@using (Html.BeginForm("CreateRoom", "room", FormMethod.Post))
+@using (Html.BeginForm("CreateRoom", "Room", FormMethod.Post))
 {
 <form class="text-center border border-light p-5">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>

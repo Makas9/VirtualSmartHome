@@ -10,7 +10,9 @@ namespace SmartHome.Models
     {
         [Key]
         public int Id { get; set; }
-        public DateTimeOffset TimeOfEvent { get; set; }
+        [Display(Name = "Time of scenario")]
+        [DataType(DataType.Date)]
+        public DateTime TimeOfEvent { get; set; }
         public string EventURL { get; set; }
         [Required]
         public int DeviceId { get; set; }

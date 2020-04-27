@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using SmartHome.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace SmartHome
 {
@@ -27,6 +28,15 @@ namespace SmartHome
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<SmartHomeDbContext>(options => options.UseMySql(Configuration.GetConnectionString("SmartHomeDBConnection")));
+
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.AreaViewLocationFormats.Clear();
+                options.AreaViewLocationFormats.Add("/Areas/{2}/Views/{1}/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/Areas/{2}/Views/Shared/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
+            });
+
             services.AddControllersWithViews();
 
             services.AddDistributedMemoryCache();
@@ -60,9 +70,19 @@ namespace SmartHome
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                name: "MyAreaResident",
+                areaName: "Resident",
+                pattern: "Resident/{controller=User}/{action=UserLogin}/{id?}");
+
+                endpoints.MapAreaControllerRoute(
+                name: "MyAreaRoom",
+                areaName: "Room",
+                pattern: "Room/{controller=Room}/{action=RoomList}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=User}/{action=UserLogin}/{id?}");
+                    pattern: "{area=Resident}/{controller=User}/{action=UserLogin}/{id?}");
             });
         }
     }

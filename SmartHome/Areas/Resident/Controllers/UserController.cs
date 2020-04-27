@@ -10,15 +10,18 @@ using SmartHome.Models;
 
 namespace SmartHome.Resident.Controllers
 {
+
+    [Area("Resident")]
     public class UserController : Controller
     {
 
+        private const string _ViewPath = "../";
         public const string _Username = "null";
         public const string _UserID = "null";
 
         public ActionResult UserLogin()
         {
-            return View("../../Resident/Views/UserLogin");
+            return View(_ViewPath + "UserLogin");
         }
 
         [HttpPost]
@@ -33,7 +36,7 @@ namespace SmartHome.Resident.Controllers
             {
                 HttpContext.Session.SetInt32(_UserID, 10); // Save UserID in session TODO
 
-                return View("../../Resident/Views/Home");
+                return View(_ViewPath + "Home");
             }
 
             return View();
@@ -50,7 +53,7 @@ namespace SmartHome.Resident.Controllers
         {
             HttpContext.Session.SetInt32(UserController._UserID, -1);
 
-            return Redirect("../Views/UserLogin");
+            return Redirect("UserLogin");
         }
 
         public ActionResult UserAssignDevices()

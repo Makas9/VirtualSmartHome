@@ -13,9 +13,12 @@ using SmartHome.Resident.Controllers;
 
 namespace SmartHome.Room.Controllers
 {
+
+    [Area("Room")]
     public class RoomController : Controller
     {
         private readonly SmartHomeDbContext _context;
+        private const string _ViewPath = "../";
 
         public RoomController(SmartHomeDbContext context)
         {
@@ -28,7 +31,7 @@ namespace SmartHome.Room.Controllers
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
             var roomList = GetRoomList();
 
-            return View("../Views/RoomList", roomList);
+            return View(_ViewPath + "RoomList", roomList);
         }
 
         public ActionResult RoomAdd()
@@ -58,7 +61,7 @@ namespace SmartHome.Room.Controllers
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
 
-            return View("../Views/RoomAdd");
+            return View(_ViewPath + "RoomAdd");
         }
 
         public bool ValidateRoomData(Models.Room roomData)
@@ -67,20 +70,20 @@ namespace SmartHome.Room.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRoom([Bind("Id","Name","HouseId")] Models.Room room)
+        public async Task<IActionResult> CreateRoom([Bind("Id", "Name", "HouseId")] Models.Room room)
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
 
             room.HouseId = 1; // Pridedam prie pirmo namo del demo
-            if(ValidateRoomData(room))
+            if (ValidateRoomData(room))
             {
                 _context.Add(room);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(RoomList));
             }
 
-            
-            return View("../Views/RoomAdd", room);
+
+            return View(_ViewPath + "RoomAdd", room);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace SmartHome.Room.Controllers
 
         public ActionResult RoomList()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
             var roomList = GetRoomList();
 
             return View(_ViewPath + "RoomList", roomList);
@@ -36,16 +36,16 @@ namespace SmartHome.Room.Controllers
 
         public ActionResult RoomAdd()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLoginn");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
-            return View();
+            return View(_ViewPath + "RoomAdd");
         }
 
         public ActionResult RoomEdit()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
-            return View();
+            return View(_ViewPath + "RoomEdit");
         }
 
         public IEnumerable<Models.Room> GetRoomList()
@@ -59,7 +59,7 @@ namespace SmartHome.Room.Controllers
 
         public ActionResult OpenRoomAddWindow()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
             return View(_ViewPath + "RoomAdd");
         }
@@ -72,7 +72,7 @@ namespace SmartHome.Room.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRoom([Bind("Id", "Name", "HouseId")] Models.Room room)
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
             room.HouseId = 1; // Pridedam prie pirmo namo del demo
             if (ValidateRoomData(room))

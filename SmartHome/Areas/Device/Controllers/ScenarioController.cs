@@ -11,11 +11,12 @@ using SmartHome.Resident.Controllers;
 
 namespace SmartHome.Device.Controllers
 {
+
     public class ScenarioController : Controller
     {
         public ActionResult AddScenario()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
             return View();
         }

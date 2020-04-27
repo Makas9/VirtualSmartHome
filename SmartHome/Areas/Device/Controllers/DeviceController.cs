@@ -12,10 +12,14 @@ using SmartHome.ViewModels;
 using SmartHome.Resident.Controllers;
 
 namespace SmartHome.Device.Controllers
-{ 
+{
+
+    [Area("Device")]
     public class DeviceController : Controller
     {
         private readonly SmartHomeDbContext _context;
+        private const string _ViewPath = "../";
+
         public DeviceController(SmartHomeDbContext context)
         {
             _context = context;
@@ -23,17 +27,17 @@ namespace SmartHome.Device.Controllers
 
         public ActionResult RoomDeviceList()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
-            return View();
+            return View(_ViewPath + "RoomDeviceList");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDevice(AddDeviceViewModel deviceData)
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
-            
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
+
             if (ValidateDeviceData(deviceData))
             {
                 Models.Device device = new Models.Device
@@ -48,17 +52,17 @@ namespace SmartHome.Device.Controllers
                 return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = deviceData.RoomID });
             }
 
-            return View("../Views/AddDevice", deviceData);
+            return View(_ViewPath + "AddDevice", deviceData);
         }
 
         public IActionResult AddDevice()
         {
-            return View("../../Resident/Views/UserLogin");
+            return View(UserController._LoginPath);
         }
 
         public ActionResult DeviceSystemComm()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
             return View();
         }
@@ -70,7 +74,7 @@ namespace SmartHome.Device.Controllers
             return devices;
         }
 
-        [HttpGet("Device/Views/RoomDeviceList/{roomID}")]
+        [HttpGet(_ViewPath + "RoomDeviceList/{roomID}")]
         public ActionResult OpenRoomDeviceList(int? roomID)
         {
             if (roomID == null)
@@ -86,13 +90,13 @@ namespace SmartHome.Device.Controllers
                 roomID = roomID.Value
             };
 
-            return View("../Views/RoomDeviceList", deviceList);
+            return View(_ViewPath + "RoomDeviceList", deviceList);
         }
 
-        [HttpGet("Device/Views/OpenAddDeviceWindow/{roomID}")]
+        [HttpGet(_ViewPath + "OpenAddDeviceWindow/{roomID}")]
         public ActionResult OpenAddDeviceWindow(int? roomID)
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
             if (roomID == null)
             {
@@ -104,7 +108,7 @@ namespace SmartHome.Device.Controllers
                 RoomID = roomID.Value
             };
 
-            return View("../Views/AddDevice", vm);
+            return View(_ViewPath + "AddDevice", vm);
         }
 
         public bool ValidateDeviceData(AddDeviceViewModel deviceData)

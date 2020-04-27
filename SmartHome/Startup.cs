@@ -80,6 +80,11 @@ namespace SmartHome
                 areaName: "Room",
                 pattern: "Room/{controller=Room}/{action=RoomList}/{id?}");
 
+                endpoints.MapAreaControllerRoute(
+                name: "MyAreaDevice",
+                areaName: "Device",
+                pattern: "Device/{controller=Device}/{action=RoomDeviceList}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{area=Resident}/{controller=User}/{action=UserLogin}/{id?}");

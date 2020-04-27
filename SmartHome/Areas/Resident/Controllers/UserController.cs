@@ -16,6 +16,7 @@ namespace SmartHome.Resident.Controllers
     {
 
         private const string _ViewPath = "../";
+        public const string _LoginPath = "Resident/User/UserLogin";
         public const string _Username = "null";
         public const string _UserID = "null";
 
@@ -44,9 +45,9 @@ namespace SmartHome.Resident.Controllers
 
         public ActionResult Home()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("UserLogin");
 
-            return View();
+            return View(_ViewPath + "Home");
         }
 
         public ActionResult Logout()
@@ -58,21 +59,21 @@ namespace SmartHome.Resident.Controllers
 
         public ActionResult UserAssignDevices()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("UserLogin");
 
             return View();
         }
 
         public ActionResult UserAdd()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("UserLogin");
 
             return View();
         }
 
         public ActionResult UserList()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("UserLogin");
 
             return View();
         }

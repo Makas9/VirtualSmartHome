@@ -6,7 +6,7 @@
 
 <h1>RoomList</h1>
 
-<a asp-controller="Room" asp-action="OpenRoomAddWindow">Add Room</a>
+<a asp-area="Room" asp-controller="Room" asp-action="OpenRoomAddWindow">Add Room</a>
 <br />
 <table class="table table-hover">
     <thead>
@@ -21,7 +21,7 @@
             <tr>
                 <th scope="row">@Html.DisplayFor(roomItem => room.Name)</th>
                 <td style="text-align: right;">
-                    <a asp-area="" asp-controller="Device" asp-action="RoomDeviceList" asp-route-id="@room.Id">room device list</a>|
+                    <a asp-area="Device" asp-controller="Device" asp-action="RoomDeviceList" asp-route-id="@room.Id">room device list</a>|
                     <a asp-area="Room" asp-controller="Room" asp-action="RoomEdit" asp-route-id="@room.Id" disabled>update</a> |
                     <a asp-area="Room" asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" disabled>delete</a>
                 </td>

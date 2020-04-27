@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SmartHome.Models;
+using SmartHome.ViewModels;
 
 namespace SmartHome.Controllers
 { 
@@ -28,12 +29,30 @@ namespace SmartHome.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddDevice(int? roomID, [Bind("Id,IpAddress,Port,RoomId")] Device device)
+        public async Task<IActionResult> AddDevice(AddDeviceViewModel deviceData)
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            
+            if (ValidateDeviceData(deviceData))
+            {
+                Device device = new Device
+                {
+                    IpAddress = deviceData.IpAddress,
+                    Port = deviceData.Port,
+                    RoomId = deviceData.RoomID
+                };
 
+                _context.Add(device);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = deviceData.RoomID });
+            }
 
-            return View();
+            return View("AddDevice", deviceData);
+        }
+
+        public IActionResult AddDevice()
+        {
+            return View("../User/UserLogin");
         }
 
         public ActionResult DeviceSystemComm()
@@ -60,22 +79,34 @@ namespace SmartHome.Controllers
 
             var devices = GetDevicesOfRoom(roomID.Value);
 
-            return View("RoomDeviceList", devices);
+            RoomDeviceListViewModel deviceList = new RoomDeviceListViewModel
+            {
+                Devices = devices,
+                roomID = roomID.Value
+            };
+
+            return View("RoomDeviceList", deviceList);
         }
 
-        public ActionResult OpenAddDeviceWindow()
+        [HttpGet("Device/OpenAddDeviceWindow/{roomID}")]
+        public ActionResult OpenAddDeviceWindow(int? roomID)
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
 
-            return View("AddDevice");
+            if (roomID == null)
+            {
+                return NotFound();
+            }
+
+            AddDeviceViewModel vm = new AddDeviceViewModel
+            {
+                RoomID = roomID.Value
+            };
+
+            return View("AddDevice", vm);
         }
 
-        public void AddDevice(Device deviceData)
-        {
-            // TODO
-        }
-
-        public bool ValidateDeviceData(Device deviceData)
+        public bool ValidateDeviceData(AddDeviceViewModel deviceData)
         {
             return ModelState.IsValid;
         }

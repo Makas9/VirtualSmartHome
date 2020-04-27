@@ -1,14 +1,14 @@
-﻿@model IEnumerable<SmartHome.Models.Device>
+﻿@model RoomDeviceListViewModel
 @{
     ViewData["Title"] = "Room Device List";
 }
 
 <h1>Room Device List</h1>
 
-<a asp-controller="Device" asp-action="OpenAddDeviceWindow">New Device</a> | <a asp-controller="Scenario" asp-action="AddScenario">New Scenario</a>
+<a asp-controller="Device" asp-action="OpenAddDeviceWindow" asp-route-id="@Model.roomID" >New Device</a> | <a asp-controller="Scenario" asp-action="AddScenario">New Scenario</a>
 <br />
 <ul class="list-group">
-    @foreach (var device in Model)
+    @foreach (var device in Model.Devices)
     {
     <li class="list-group-item">
         @device.Name

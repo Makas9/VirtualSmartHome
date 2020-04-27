@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SmartHome.Models;
+using SmartHome.Resident.Controllers;
 
-namespace SmartHome.Controllers
+namespace SmartHome.Device.Controllers
 {
     public class ScenarioController : Controller
     {
         public ActionResult AddScenario()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
 
             return View();
         }

@@ -8,7 +8,7 @@ namespace SmartHome.ViewModels
 {
     public class RoomDeviceListViewModel
     {
-        public IEnumerable<Device> Devices { get; set; }
+        public IEnumerable<Models.Device> Devices { get; set; }
         public int roomID { get; set; }
     }
 }

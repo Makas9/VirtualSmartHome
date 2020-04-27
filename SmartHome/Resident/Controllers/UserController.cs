@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SmartHome.Models;
 
-namespace SmartHome.Controllers
+namespace SmartHome.Resident.Controllers
 {
     public class UserController : Controller
     {
@@ -18,7 +18,7 @@ namespace SmartHome.Controllers
 
         public ActionResult UserLogin()
         {
-            return View();
+            return View("../../Resident/Views/UserLogin");
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace SmartHome.Controllers
             {
                 HttpContext.Session.SetInt32(_UserID, 10); // Save UserID in session TODO
 
-                return View("Home");
+                return View("../../Resident/Views/Home");
             }
 
             return View();
@@ -41,7 +41,7 @@ namespace SmartHome.Controllers
 
         public ActionResult Home()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
 
             return View();
         }
@@ -50,26 +50,26 @@ namespace SmartHome.Controllers
         {
             HttpContext.Session.SetInt32(UserController._UserID, -1);
 
-            return Redirect("../User/UserLogin");
+            return Redirect("../Views/UserLogin");
         }
 
         public ActionResult UserAssignDevices()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
 
             return View();
         }
 
         public ActionResult UserAdd()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
 
             return View();
         }
 
         public ActionResult UserList()
         {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../User/UserLogin");
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect("../../Resident/Views/UserLogin");
 
             return View();
         }

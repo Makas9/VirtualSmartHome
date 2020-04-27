@@ -19,18 +19,19 @@ namespace SmartHome.Device.Controllers
     {
         private readonly SmartHomeDbContext _context;
         private const string _ViewPath = "../";
+        private const string _ControllerPath = "device/device/";
 
         public DeviceController(SmartHomeDbContext context)
         {
             _context = context;
         }
 
-        public ActionResult RoomDeviceList()
+        /*public ActionResult RoomDeviceList()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
             return View(_ViewPath + "RoomDeviceList");
-        }
+        }*/
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -74,7 +75,7 @@ namespace SmartHome.Device.Controllers
             return devices;
         }
 
-        [HttpGet(_ViewPath + "RoomDeviceList/{roomID}")]
+        [HttpGet(_ControllerPath + "OpenRoomDeviceList/{roomID}")]
         public ActionResult OpenRoomDeviceList(int? roomID)
         {
             if (roomID == null)
@@ -93,7 +94,7 @@ namespace SmartHome.Device.Controllers
             return View(_ViewPath + "RoomDeviceList", deviceList);
         }
 
-        [HttpGet(_ViewPath + "OpenAddDeviceWindow/{roomID}")]
+        [HttpGet(_ControllerPath + "OpenAddDeviceWindow/{roomID}")]
         public ActionResult OpenAddDeviceWindow(int? roomID)
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<SmartHome.Models.Room>
 @{
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "RoomList";
 }
 
@@ -21,7 +21,7 @@
             <tr>
                 <th scope="row">@Html.DisplayFor(roomItem => room.Name)</th>
                 <td style="text-align: right;">
-                    <a asp-area="Device" asp-controller="Device" asp-action="RoomDeviceList" asp-route-id="@room.Id">room device list</a>|
+                    <a asp-area="Device" asp-controller="Device" asp-action="OpenRoomDeviceList" asp-route-id="@room.Id">room device list</a>|
                     <a asp-area="Room" asp-controller="Room" asp-action="RoomEdit" asp-route-id="@room.Id" disabled>update</a> |
                     <a asp-area="Room" asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" disabled>delete</a>
                 </td>

@@ -1,3 +1,3 @@
 # VirtualSmartHome
 
-Projektui realizuoti naudosime ASP.NET Core.
+Projektui realizuoti naudosime C# su ASP.NET Core.

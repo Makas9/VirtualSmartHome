@@ -1,0 +1,26 @@
+﻿@model SmartHome.Models.Room
+@{
+    ViewData["Title"] = "New Room";
+}
+
+<h1>New Room</h1>
+@ViewData["bool"]
+
+@using (Html.BeginForm("CreateRoom", "Room", FormMethod.Post))
+{
+<form class="text-center border border-light p-5">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control mb-4", @type = "text", @placeholder = "Room name..." } })
+    @Html.ValidationMessageFor(model => model.Name)
+
+    @*@Html.EditorFor(model => model.HouseId, new { htmlAttributes = new { @class = "form-control mb-4", @type = "number", @placeholder = "HouseID..." } })-->
+    @Html.ValidationMessageFor(model => model.HouseId)*@
+
+    <div>
+        <input type="submit" value="Add" class="btn btn-primary" />
+    </div>
+
+</form>
+}

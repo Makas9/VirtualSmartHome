@@ -1,0 +1,30 @@
+﻿@model IEnumerable<SmartHome.Models.Room>
+@{
+    ViewData["Title"] = "RoomList";
+}
+
+<h1>RoomList</h1>
+
+<a asp-controller="Room" asp-action="OpenRoomAddWindow">Add Room</a>
+<br />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var room in Model)
+        {
+            <tr>
+                <th scope="row">@Html.DisplayFor(roomItem => room.Name)</th>
+                <td style="text-align: right;">
+                    <a asp-controller="Device" asp-action="RoomDeviceList" asp-route-id="@room.Id">room device list</a>|
+                    <a asp-controller="Room" asp-action="RoomEdit" asp-route-id="@room.Id" disabled>update</a> |
+                    <a asp-controller="Room" asp-action="Delete" asp-route-id="@room.Id" disabled>delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

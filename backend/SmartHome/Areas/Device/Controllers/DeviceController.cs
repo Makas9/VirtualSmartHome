@@ -30,7 +30,7 @@ namespace SmartHome.Device.Controllers
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }; // Ignoring certificates
             _context = context;
             _httpClient = new HttpClient(clientHandler);
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            //_httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
@@ -214,31 +214,47 @@ namespace SmartHome.Device.Controllers
                 device.State = DeviceState.On;
                 var json = JsonConvert.SerializeObject(device);
 
-
-                //string body = JsonSerializer.Serialize<Models.Device>(device);
-                /*var parameters = new Dictionary<string, string> {
-                    { nameof(Models.Device.Name), device.Name },
-                    { nameof(Models.Device.Model), device.Model },
-                    { nameof(Models.Device.Value), device.Value },
-                    { nameof(Models.Device.Type), device.Type },
-                    { nameof(Models.Device.State), device.State },
-
-                };*/
-                
-                var response = await _httpClient.PostAsync("https://localhost:44356/api/device/", new StringContent(json, Encoding.UTF8));
+                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port) + "/api/device", new StringContent(json, Encoding.UTF8, "application/json"));
                 Console.WriteLine(response);
-
-                //todo: check response if ok
+                    
+                if (response.IsSuccessStatusCode)
+                {
+                    var deviceInfo = JsonConvert.DeserializeObject<Models.Device>(await response.Content.ReadAsStringAsync());
+                    device.State = deviceInfo.State;
+                    _context.Update(device);
+                    await _context.SaveChangesAsync();
+                }
             }
-            
-
             return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = device.RoomId });
             
         }
 
-        public void TurnOff(int deviceID)
+
+        public async Task<IActionResult> TurnOff(int deviceID)
         {
-            // TODO
+            var state = await GetState(deviceID);
+            if (state == null)
+            {
+                throw new Exception();
+            }
+            var device = await _context.Devices.Include(d => d.Room).FirstOrDefaultAsync(d => d.Id == deviceID);
+            if (state == DeviceState.On)
+            {
+                device.State = DeviceState.Off;
+                var json = JsonConvert.SerializeObject(device);
+
+                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port) + "/api/device", new StringContent(json, Encoding.UTF8, "application/json"));
+                Console.WriteLine(response);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var deviceInfo = JsonConvert.DeserializeObject<Models.Device>(await response.Content.ReadAsStringAsync());
+                    device.State = deviceInfo.State;
+                    _context.Update(device);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = device.RoomId });
         }
 
         public void Log()

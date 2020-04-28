@@ -46,7 +46,7 @@ namespace SmartHome.Device.Controllers
                     RoomId = deviceData.RoomID
                 };
 
-                device = GetState(device).Result;
+                device = await GetDeviceData(device);
 
                 _context.Add(device);
                 await _context.SaveChangesAsync();
@@ -113,7 +113,7 @@ namespace SmartHome.Device.Controllers
         }
 
         
-        public async Task<Models.Device> GetState(Models.Device device) // reiketu pervadint i getDeviceData ar pns.
+        public async Task<Models.Device> GetDeviceData(Models.Device device)
         {
             _httpClient.BaseAddress = new Uri(UrlBuilder(device.IpAddress, device.Port));
 
@@ -137,6 +137,38 @@ namespace SmartHome.Device.Controllers
             return jsonModel;
         }
 
+        public async Task<DeviceState> GetState(int? deviceID)
+        {
+            if(deviceID == null)
+            {
+                new ArgumentException("", nameof(deviceID));
+            }
+
+            var device = await _context.Devices.FirstOrDefaultAsync(d => d.Id == deviceID);
+
+            if(device == null)
+            {
+                new ArgumentException("", nameof(device));
+            }
+
+            _httpClient.BaseAddress = new Uri(UrlBuilder(device.IpAddress, device.Port));
+
+            string deviceInfo = null;
+
+            try
+            {
+                deviceInfo = await _httpClient.GetStringAsync("api/device");
+            }
+            catch (Exception ex)  // fails to connect with device
+            {
+                throw new ArgumentException($"Could not reach device with IP: {device.IpAddress}, Port: {device.Port}.", nameof(device.IpAddress));
+            }
+
+            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo);
+
+            return jsonModel.State.Value;
+        }
+
         public string UrlBuilder(string address, int port)
         {
             return "https://" + address + ":" + port.ToString(); ;
@@ -153,14 +185,15 @@ namespace SmartHome.Device.Controllers
 
         public async Task<IActionResult> TurnOn(int deviceID)
         {
-            var device = _context.Devices.FirstOrDefaultAsync(d => d.Id == deviceID).;
-
-            if (device == null)
+            if (await GetState(deviceID) == DeviceState.Off)
             {
-                return NotFound();
+                var device = await _context.Devices.FirstOrDefaultAsync(d => d.Id == deviceID);
+                var parameters = new Dictionary<string, string> { { "state", "1" }};
+                var encodedContent = new FormUrlEncodedContent(parameters); 
+                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port), encodedContent).ConfigureAwait(false);
+                //todo: check response if ok
             }
-
-            _httpClient.BaseAddress = new Uri(UrlBuilder(device.IpAddress, device.Port));
+            return View("RoomDeviceList", deviceID);
             
         }
 

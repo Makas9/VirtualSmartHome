@@ -10,6 +10,7 @@ using SmartHome.Resident.Controllers;
 using System.Net.Http;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace SmartHome.Device.Controllers
 {
@@ -127,8 +128,13 @@ namespace SmartHome.Device.Controllers
             {
                 throw new ArgumentException($"Could not reach device with IP: {device.IpAddress}, Port: {device.Port}.", nameof(device.IpAddress));
             }
-            
-            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo);
+
+            var options = new JsonSerializerOptions
+            {
+                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo, options);
 
             jsonModel.IpAddress = device.IpAddress;
             jsonModel.Port = device.Port;
@@ -137,7 +143,7 @@ namespace SmartHome.Device.Controllers
             return jsonModel;
         }
 
-        public async Task<DeviceState> GetState(int? deviceID)
+        public async Task<DeviceState?> GetState(int? deviceID)
         {
             if(deviceID == null)
             {
@@ -164,9 +170,19 @@ namespace SmartHome.Device.Controllers
                 throw new ArgumentException($"Could not reach device with IP: {device.IpAddress}, Port: {device.Port}.", nameof(device.IpAddress));
             }
 
-            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
 
-            return jsonModel.State.Value;
+            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo, options);
+
+            if(jsonModel.State != null)
+            {
+                return jsonModel.State.Value;
+            }
+
+            return null;
         }
 
         public string UrlBuilder(string address, int port)
@@ -185,15 +201,30 @@ namespace SmartHome.Device.Controllers
 
         public async Task<IActionResult> TurnOn(int deviceID)
         {
-            if (await GetState(deviceID) == DeviceState.Off)
+            var state = await GetState(deviceID);
+            if(state == null)
             {
-                var device = await _context.Devices.FirstOrDefaultAsync(d => d.Id == deviceID);
-                var parameters = new Dictionary<string, string> { { "state", "1" }};
-                var encodedContent = new FormUrlEncodedContent(parameters); 
-                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port), encodedContent).ConfigureAwait(false);
+                throw new Exception();
+            }
+            var device = await _context.Devices.Include(d => d.Room).FirstOrDefaultAsync(d => d.Id == deviceID);
+            if (state == DeviceState.Off)
+            {
+                device.State = DeviceState.On;
+                string body = JsonSerializer.Serialize<Models.Device>(device);
+                /*var parameters = new Dictionary<string, string> {
+                    { nameof(Models.Device.Name), device.Name },
+                    { nameof(Models.Device.Model), device.Model },
+                    { nameof(Models.Device.Value), device.Value },
+                    { nameof(Models.Device.Type), device.Type },
+                    { nameof(Models.Device.State), device.State },
+
+                };*/
+                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port), new StringContent(body, Encoding.UTF8));
                 //todo: check response if ok
             }
-            return View("RoomDeviceList", deviceID);
+            
+
+            return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = device.RoomId });
             
         }
 

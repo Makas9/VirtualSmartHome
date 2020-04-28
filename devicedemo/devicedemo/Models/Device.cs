@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace devicedemo.Models
+namespace Devicedemo.Models
 {
     public class Device
     {

@@ -11,6 +11,7 @@ namespace SmartHome.Models
     public class Device
     {
 #nullable enable
+        [JsonIgnore]
         [Key]
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -29,9 +30,12 @@ namespace SmartHome.Models
         [JsonIgnore]
         [Required]
         public int RoomId { get; set; }
+        [JsonIgnore]
         public Room Room { get; set; }
+        [JsonIgnore]
         [InverseProperty("Device")]
         public ICollection<Scenario> Scenarios { get; set; }
+        [JsonIgnore]
         public ICollection<UserDevice> Users { get; set; }
     }
 

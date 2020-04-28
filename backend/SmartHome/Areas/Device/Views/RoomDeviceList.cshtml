@@ -13,14 +13,14 @@
 <ul class="list-group">
     @foreach (var device in Model.Devices)
     {
-    <li class="list-group-item">
-        @device.Name
+        <li class="list-group-item">
+            @device.Name
             <span class="badge" style="float: right;">
                 <div class="custom-control custom-switch">
                     @if (device.State == DeviceState.Off)
                     {
-                        <input type="checkbox" name="DeviceState" class="custom-control-input" value="@device.Id"> @* not sure ar cia teisingai *@
-                        <label class="custom-control-label" for="customSwitch1"></label>
+                        <input type="checkbox" onclick="triggerTurnOn()" value="false" class = "custom-control-input">@* not sure ar cia teisingai *@
+                        <label class="custom-control-label" for="checkbox"></label>
                     }
                     else if (device.State == DeviceState.On)
                     {
@@ -33,7 +33,20 @@
                     }
                 </div>
             </span>
-                
-    </li>
+
+        </li>
+
+
+
+        <script>
+    function triggerTurnOn() {
+        var theUrl = '@Url.Action("TurnOn", "Device", new {deviceID = device.Id}, null)';
+        window.location = theUrl;
+    }
+    function triggerTurnOff() {
+        var theUrl = '@Url.Action("TurnOff", "Device", new {deviceID = device.Id}, null)';
+        window.location = theUrl;
+    }
+        </script>
     }
 </ul>

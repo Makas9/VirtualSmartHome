@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using SmartHome.Models;
 using SmartHome.ViewModels;
 using SmartHome.Resident.Controllers;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace SmartHome.Device.Controllers
 {
@@ -18,20 +17,18 @@ namespace SmartHome.Device.Controllers
     public class DeviceController : Controller
     {
         private readonly SmartHomeDbContext _context;
+        private HttpClient _httpClient;
+        private HttpClientHandler clientHandler = new HttpClientHandler();
         private const string _ViewPath = "../";
         private const string _ControllerPath = "device/device/";
 
         public DeviceController(SmartHomeDbContext context)
         {
+            
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }; // Ignoring certificates
             _context = context;
+            _httpClient = new HttpClient(clientHandler); // HttpClient for communication through http
         }
-
-        /*public ActionResult RoomDeviceList()
-        {
-            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
-
-            return View(_ViewPath + "RoomDeviceList");
-        }*/
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -47,6 +44,8 @@ namespace SmartHome.Device.Controllers
                     Port = deviceData.Port,
                     RoomId = deviceData.RoomID
                 };
+
+                device = GetDeviceData(device).Result;
 
                 _context.Add(device);
                 await _context.SaveChangesAsync();
@@ -112,6 +111,35 @@ namespace SmartHome.Device.Controllers
             return View(_ViewPath + "AddDevice", vm);
         }
 
+        
+        public async Task<Models.Device> GetDeviceData(Models.Device device)
+        {
+            _httpClient.BaseAddress = new Uri(UrlBuilder(device.IpAddress, device.Port));
+
+            string deviceInfo = null;
+
+            try
+            {
+                deviceInfo = await _httpClient.GetStringAsync("api/device");
+            } 
+            catch (Exception ex)  // fails to connect with device
+            {
+                throw new ArgumentException($"Could not reach device with IP: {device.IpAddress}, Port: {device.Port}.", nameof(device.IpAddress));
+            }
+            
+            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo);
+
+            jsonModel.IpAddress = device.IpAddress;
+            jsonModel.Port = device.Port;
+            jsonModel.RoomId = device.RoomId;
+
+            return jsonModel;
+        }
+
+        public string UrlBuilder(string address, int port)
+        {
+            return "https://" + address + ":" + port.ToString(); ;
+        }
         public bool ValidateDeviceData(AddDeviceViewModel deviceData)
         {
             return ModelState.IsValid;

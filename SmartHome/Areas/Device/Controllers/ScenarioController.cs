@@ -14,6 +14,7 @@ namespace SmartHome.Device.Controllers
 
     public class ScenarioController : Controller
     {
+        private const string _ControllerPath = "device/device/";
         public ActionResult AddScenario()
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace SmartHome.Models
 {
@@ -17,12 +18,15 @@ namespace SmartHome.Models
         public double? Value { get; set; }
         public DeviceType? Type { get; set; }
         public DeviceState? State { get; set; }
+        [JsonIgnore]
         [Required]
         [RegularExpression(@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")]
         [StringLength(15, MinimumLength = 7)]
         public string  IpAddress { get; set; }
+        [JsonIgnore]
         [Required]
         public int Port { get; set; }
+        [JsonIgnore]
         [Required]
         public int RoomId { get; set; }
         public Room Room { get; set; }

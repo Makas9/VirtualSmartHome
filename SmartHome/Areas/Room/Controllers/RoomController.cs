@@ -19,6 +19,7 @@ namespace SmartHome.Room.Controllers
     {
         private readonly SmartHomeDbContext _context;
         private const string _ViewPath = "../";
+        private const string _ControllerPath = "device/device/";
 
         public RoomController(SmartHomeDbContext context)
         {

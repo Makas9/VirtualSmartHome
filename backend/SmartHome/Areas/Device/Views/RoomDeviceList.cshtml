@@ -19,7 +19,7 @@
                 <div class="custom-control custom-switch">
                     @if (device.State == DeviceState.Off)
                     {
-                        <input type="checkbox" onclick="triggerTurnOn()" value="false" class = "custom-control-input">@* not sure ar cia teisingai *@
+                        <input type="checkbox" onclick="triggerTurnOn()" value="false" >@* not sure ar cia teisingai *@
                         <label class="custom-control-label" for="checkbox"></label>
                     }
                     else if (device.State == DeviceState.On)

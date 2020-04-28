@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace SmartHome.Device.Controllers
 {
@@ -26,10 +27,11 @@ namespace SmartHome.Device.Controllers
 
         public DeviceController(SmartHomeDbContext context)
         {
-            
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }; // Ignoring certificates
             _context = context;
-            _httpClient = new HttpClient(clientHandler); // HttpClient for communication through http
+            _httpClient = new HttpClient(clientHandler);
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         [HttpPost]
@@ -134,7 +136,7 @@ namespace SmartHome.Device.Controllers
                  PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo, options);
+            var jsonModel = JsonConvert.DeserializeObject<Models.Device>(deviceInfo);
 
             jsonModel.IpAddress = device.IpAddress;
             jsonModel.Port = device.Port;
@@ -175,7 +177,7 @@ namespace SmartHome.Device.Controllers
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            var jsonModel = JsonSerializer.Deserialize<Models.Device>(deviceInfo, options);
+            var jsonModel = JsonConvert.DeserializeObject<Models.Device>(deviceInfo);
 
             if(jsonModel.State != null)
             {
@@ -210,7 +212,10 @@ namespace SmartHome.Device.Controllers
             if (state == DeviceState.Off)
             {
                 device.State = DeviceState.On;
-                string body = JsonSerializer.Serialize<Models.Device>(device);
+                var json = JsonConvert.SerializeObject(device);
+
+
+                //string body = JsonSerializer.Serialize<Models.Device>(device);
                 /*var parameters = new Dictionary<string, string> {
                     { nameof(Models.Device.Name), device.Name },
                     { nameof(Models.Device.Model), device.Model },
@@ -219,7 +224,10 @@ namespace SmartHome.Device.Controllers
                     { nameof(Models.Device.State), device.State },
 
                 };*/
-                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port), new StringContent(body, Encoding.UTF8));
+                
+                var response = await _httpClient.PostAsync("https://localhost:44356/api/device/", new StringContent(json, Encoding.UTF8));
+                Console.WriteLine(response);
+
                 //todo: check response if ok
             }
             

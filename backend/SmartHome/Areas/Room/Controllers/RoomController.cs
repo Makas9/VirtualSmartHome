@@ -51,11 +51,11 @@ namespace SmartHome.Room.Controllers
 
         public IEnumerable<Models.Room> GetRoomList()
         {
-            var rooms = _context.Rooms.Include(r => r.House).ToList();
+            //var rooms = _context.Rooms.Include(r => r.House).ToList();
 
             // todo: kai bus vartotojas atrinkt pagal prisijungusio vartotojo namus
-
-            return rooms;
+            //return rooms;
+            return Models.Room.Select(_context);
         }
 
         public ActionResult OpenRoomAddWindow()

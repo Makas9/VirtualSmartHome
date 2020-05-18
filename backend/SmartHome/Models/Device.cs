@@ -42,6 +42,11 @@ namespace SmartHome.Models
         {
             return context.Devices.Where(r => r.RoomId == roomId).ToList();
         }
+
+        public static void AddDevice(SmartHomeDbContext context, Models.Device device)
+        {
+            context.Add(device);
+        }
     }
 
     public enum DeviceType

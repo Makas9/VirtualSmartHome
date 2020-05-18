@@ -51,7 +51,8 @@ namespace SmartHome.Device.Controllers
 
                 device = await GetDeviceData(device);
 
-                _context.Add(device);
+                //_context.Add(device);
+                Models.Device.AddDevice(_context, device);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = deviceData.RoomID });
             }

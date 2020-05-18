@@ -79,7 +79,7 @@ namespace SmartHome.Room.Controllers
             if (ValidateRoomData(room))
             {
                 //_context.Add(room);
-                Models.Room.CreateRoom(_context, room);
+                Models.Room.AddRoom(_context, room);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(RoomList));
             }

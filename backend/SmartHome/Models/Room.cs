@@ -21,7 +21,7 @@ namespace SmartHome.Models
         [InverseProperty("Room")]
         public ICollection<Device> Devices { get; set; }
 
-        public static void CreateRoom(SmartHomeDbContext context, Models.Room roomData)
+        public static void AddRoom(SmartHomeDbContext context, Models.Room roomData)
         {
             context.Add(roomData);
         }

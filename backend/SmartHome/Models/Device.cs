@@ -47,6 +47,11 @@ namespace SmartHome.Models
         {
             context.Add(device);
         }
+
+        public static void UpdateState(SmartHomeDbContext context, Models.Device device)
+        {
+            context.Update(device);
+        }
     }
 
     public enum DeviceType

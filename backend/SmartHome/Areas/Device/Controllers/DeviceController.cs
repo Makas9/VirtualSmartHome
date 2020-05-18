@@ -253,7 +253,8 @@ namespace SmartHome.Device.Controllers
                 {
                     var deviceInfo = JsonConvert.DeserializeObject<Models.Device>(await response.Content.ReadAsStringAsync());
                     device.State = deviceInfo.State;
-                    _context.Update(device);
+                    //_context.Update(device);
+                    Models.Device.UpdateState(_context, device);
                     await _context.SaveChangesAsync();
                 }
             }

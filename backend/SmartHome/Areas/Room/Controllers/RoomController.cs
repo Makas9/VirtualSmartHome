@@ -78,7 +78,8 @@ namespace SmartHome.Room.Controllers
             room.HouseId = 1; // Pridedam prie pirmo namo del demo
             if (ValidateRoomData(room))
             {
-                _context.Add(room);
+                //_context.Add(room);
+                Models.Room.CreateRoom(_context, room);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(RoomList));
             }

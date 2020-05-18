@@ -73,9 +73,10 @@ namespace SmartHome.Device.Controllers
 
         public IEnumerable<Models.Device> GetDevicesOfRoom(int roomID)
         {
-            List<Models.Device> devices = _context.Devices.Where(r => r.RoomId == roomID).ToList();
+            //List<Models.Device> devices = _context.Devices.Where(r => r.RoomId == roomID).ToList();
+            //return DeviceState;
 
-            return devices;
+            return Models.Device.SelectBelongingToRoom(_context, roomID);
         }
 
         [HttpGet(_ControllerPath + "OpenRoomDeviceList/{roomID}")]

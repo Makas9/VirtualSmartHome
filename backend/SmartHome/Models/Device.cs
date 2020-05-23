@@ -43,6 +43,14 @@ namespace SmartHome.Models
             return context.Devices.Where(r => r.RoomId == roomId).ToList();
         }
 
+        public static Models.Device GetDevice(SmartHomeDbContext context, int id)
+        {
+            var d = context.Devices.Where(d => d.Id == id).ToList();
+            if (d.Count == 0)
+                return null;
+            return d[0];
+        }
+
         public static void AddDevice(SmartHomeDbContext context, Models.Device device)
         {
             context.Add(device);

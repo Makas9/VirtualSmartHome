@@ -12,6 +12,8 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using Newtonsoft.Json;
+using System.IO;
+using System.Threading;
 
 namespace SmartHome.Device.Controllers
 {
@@ -261,9 +263,51 @@ namespace SmartHome.Device.Controllers
             return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = device.RoomId });
         }
 
-        public void Log()
+        public void ExecuteScene(int sceneID)
         {
+            Scenario scenarioData = Scenario.GetScenario(_context, sceneID);
+            if (scenarioData == null)
+            {
+                LogError($"scenario with ID={sceneID} does not exist");
+                return;
+            }
+            
+            Models.Device deviceData = Models.Device.GetDevice(_context, scenarioData.DeviceId);
+            if (deviceData == null)
+            {
+                LogError($"device with ID={scenarioData.DeviceId} does not exist");
+                return;
+            }
+            
+            string scenario;
+            using (var wc = new System.Net.WebClient())
+                scenario = wc.DownloadString(scenarioData.EventURL);
+
+            // Start log thread
+            Thread t = new Thread(() => Log($"started excecuting scenario: URL={scenarioData.EventURL}, ID={scenarioData.Id}"));
+            t.Start();
+
+            // Execute scenario
             // TODO
+
+            // Wait for log to finish
+            t.Join();
+        }
+
+        public void Log(string message)
+        {
+            using (var f = new StreamWriter("scenario.log", true, Encoding.UTF8))
+            {
+                f.Write($"{DateTime.Now}: {message};\n");
+            }
+        }
+
+        public void LogError(string message)
+        {
+            using (var f = new StreamWriter("scenario.log", true, Encoding.UTF8))
+            {
+                f.Write($"{DateTime.Now}: ERROR {message};\n");
+            }
         }
     }
 }

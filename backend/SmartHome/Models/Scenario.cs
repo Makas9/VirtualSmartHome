@@ -17,5 +17,13 @@ namespace SmartHome.Models
         [Required]
         public int DeviceId { get; set; }
         public Device Device { get; set; }
+
+        public static Scenario GetScenario(SmartHomeDbContext context, int id)
+        {
+            var scenes = context.Scenarios.Where(s => s.Id == id).ToList();
+            if (scenes.Count == 0)
+                return null;
+            return scenes[0];
+        }
     }
 }

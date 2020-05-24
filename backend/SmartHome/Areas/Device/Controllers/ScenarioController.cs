@@ -24,7 +24,19 @@ namespace SmartHome.Device.Controllers
 
         public void CreateScenario(Scenario scenarioData)
         {
-            // TODO
+            if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return;
+
+            if (ValidateScenarioData(scenarioData))
+            {
+                Models.Scenario scenario = new Models.Scenario
+                {
+                    TimeOfEvent = scenarioData.TimeOfEvent,
+                    EventURL = scenarioData.EventURL,
+                    DeviceId = scenarioData.DeviceId
+                };
+
+                // TODO
+            }
         }
 
         public bool ValidateScenarioData(Scenario scenarioData)

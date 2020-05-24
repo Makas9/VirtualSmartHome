@@ -6,22 +6,22 @@
 
 <h1>AddScenario</h1>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("AddScenario", "Scenario", FormMethod.Post, new { scenarioData = Model }))
 {
-<form class="text-center border border-light p-5" action="#!">
+    <form class="text-center border border-light p-5" action="#!">
 
-    @Html.EditorFor(model => model.TimeOfEvent, new { htmlAttributes = new { @class = "form-control mb-4", @type = "datetime-local", @placeholder = "Room name..." } })
-    @Html.ValidationMessageFor(model => model.TimeOfEvent)
+        @Html.EditorFor(model => model.TimeOfEvent, new { htmlAttributes = new { @class = "form-control mb-4", @type = "datetime-local", @placeholder = "Room name..." } })
+        @Html.ValidationMessageFor(model => model.TimeOfEvent)
 
-    @Html.EditorFor(model => model.EventURL, new { htmlAttributes = new { @class = "form-control mb-4", @type = "text", @placeholder = "Event URL..." } })
-    @Html.ValidationMessageFor(model => model.EventURL)
+        @Html.EditorFor(model => model.EventURL, new { htmlAttributes = new { @class = "form-control mb-4", @type = "text", @placeholder = "Event URL..." } })
+        @Html.ValidationMessageFor(model => model.EventURL)
 
-    @Html.EditorFor(model => model.DeviceId, new { htmlAttributes = new { @class = "form-control mb-4", @type = "number", @placeholder = "Device ID..." } })
-    @Html.ValidationMessageFor(model => model.DeviceId)
+        @Html.EditorFor(model => model.DeviceId, new { htmlAttributes = new { @class = "form-control mb-4", @type = "number", @placeholder = "Device ID..." } })
+        @Html.ValidationMessageFor(model => model.DeviceId)
 
-    <div>
-        <input type="submit" value="Add" class="btn btn-primary" />
-    </div>
+        <div>
+            <input type="submit" value="Add" class="btn btn-primary" />
+        </div>
 
-</form>
+    </form>
 }

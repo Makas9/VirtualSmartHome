@@ -25,5 +25,10 @@ namespace SmartHome.Models
                 return null;
             return scenes[0];
         }
+
+        public static void AddScenario(SmartHomeDbContext context, Models.Scenario scenario)
+        {
+            context.Add(scenario);
+        }
     }
 }

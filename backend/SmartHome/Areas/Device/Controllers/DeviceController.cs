@@ -263,7 +263,7 @@ namespace SmartHome.Device.Controllers
             return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = device.RoomId });
         }
 
-        public void ExecuteScene(int sceneID)
+        async public void ExecuteScene(int sceneID)
         {
             Scenario scenarioData = Scenario.GetScenario(_context, sceneID);
             if (scenarioData == null)
@@ -280,15 +280,34 @@ namespace SmartHome.Device.Controllers
             }
             
             string scenario;
-            using (var wc = new System.Net.WebClient())
-                scenario = wc.DownloadString(scenarioData.EventURL);
-
+            try
+            {
+                using (var wc = new System.Net.WebClient())
+                    scenario = wc.DownloadString(scenarioData.EventURL);
+            }
+            catch
+            {
+                LogError($"failed to connect to {scenarioData.EventURL}");
+                return;
+            }
+            string[] lines = scenario.Split(new char[] { '\n', '\r', '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             // Start log thread
             Thread t = new Thread(() => Log($"started excecuting scenario: URL={scenarioData.EventURL}, ID={scenarioData.Id}"));
             t.Start();
 
             // Execute scenario
-            // TODO
+            for (int i = 1; i < lines.Length; i++)
+            {
+                switch (lines[i].ToLower())
+                {
+                    case "turnon":
+                        await TurnOn(scenarioData.DeviceId);
+                        break;
+                    case "turnoff":
+                        await TurnOff(scenarioData.DeviceId);
+                        break;
+                }
+            }
 
             // Wait for log to finish
             t.Join();

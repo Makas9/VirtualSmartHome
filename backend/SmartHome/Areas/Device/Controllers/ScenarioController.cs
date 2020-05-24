@@ -27,9 +27,26 @@ namespace SmartHome.Device.Controllers
             // TODO
         }
 
-        public void ValidateScenarioData(Scenario scenarioData)
+        public bool ValidateScenarioData(Scenario scenarioData)
         {
-            // TODO
+            if (!ModelState.IsValid)
+                return false;
+
+            string scenario;
+            try
+            {
+                using (var wc = new System.Net.WebClient())
+                    scenario = wc.DownloadString(scenarioData.EventURL);
+            }
+            catch
+            {
+                return false;
+            }
+            string[] lines = scenario.Split(new char[] { '\n', '\r', '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (lines.Length < 2 || !lines[0].Equals("SHScript"))
+                return false;
+            
+            return true;
         }
     }
 }

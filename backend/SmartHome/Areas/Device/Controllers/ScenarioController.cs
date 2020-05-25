@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SmartHome.Areas.ViewModels;
 using SmartHome.Models;
 using SmartHome.Resident.Controllers;
 
@@ -39,7 +40,7 @@ namespace SmartHome.Device.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddScenario(Scenario scenarioData, int roomID)
+        public async Task<IActionResult> AddScenario(AddScenarioViewModel scenarioData)
         {
             if (HttpContext.Session.GetInt32(UserController._UserID) < 0) return Redirect(UserController._LoginPath);
 
@@ -55,13 +56,13 @@ namespace SmartHome.Device.Controllers
                 Models.Scenario.AddScenario(_context, scenario);
                 await _context.SaveChangesAsync();
 
-                //return RedirectToAction(nameof(Controllers.DeviceController.OpenRoomDeviceList), new { roomID = roomID });
+                return RedirectToAction(nameof(Controllers.DeviceController.OpenRoomDeviceList), "Device", new {area = "Device", roomID = scenarioData.RoomID });
             }
 
             return View(_ViewPath + "AddScenario");
         }
 
-        public bool ValidateScenarioData(Scenario scenarioData)
+        public bool ValidateScenarioData(AddScenarioViewModel scenarioData)
         {
             if (!ModelState.IsValid)
                 return false;

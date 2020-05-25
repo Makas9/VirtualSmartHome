@@ -58,6 +58,7 @@ namespace SmartHome.Device.Controllers
                 //_context.Add(device);
                 Models.Device.AddDevice(_context, device);
                 await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = deviceData.RoomID });
             }
 
@@ -259,6 +260,7 @@ namespace SmartHome.Device.Controllers
 
         async public void ExecuteScene(int sceneID)
         {
+            Console.WriteLine(sceneID);
             Scenario scenarioData = Scenario.GetScenario(_context, sceneID);
             if (scenarioData == null)
             {
@@ -286,6 +288,7 @@ namespace SmartHome.Device.Controllers
             }
             string[] lines = scenario.Split(new char[] { '\n', '\r', '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             // Start log thread
+            int id = scenarioData.DeviceId;
             Thread t = new Thread(() => Log($"started excecuting scenario: URL={scenarioData.EventURL}, ID={scenarioData.Id}"));
             t.Start();
 
@@ -295,10 +298,10 @@ namespace SmartHome.Device.Controllers
                 switch (lines[i].ToLower())
                 {
                     case "turnon":
-                        await TurnOn(scenarioData.DeviceId);
+                        await TurnOn(id);
                         break;
                     case "turnoff":
-                        await TurnOff(scenarioData.DeviceId);
+                        await TurnOff(id);
                         break;
                 }
             }

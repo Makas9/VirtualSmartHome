@@ -21,6 +21,11 @@ namespace SmartHome.Models
             
         }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<House>().HasMany(h => h.Rooms).WithOne(r => r.House).HasForeignKey(r => r.HouseId).OnDelete(DeleteBehavior.Cascade);
+        }
+
+
     }
 }

@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\Devicedemo.csproj": {}
+    "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\devicedemo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\Devicedemo.csproj": {
+    "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\devicedemo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\Devicedemo.csproj",
-        "projectName": "Devicedemo",
-        "projectPath": "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\Devicedemo.csproj",
+        "projectUniqueName": "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\devicedemo.csproj",
+        "projectName": "devicedemo",
+        "projectPath": "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\devicedemo.csproj",
         "packagesPath": "C:\\Users\\meoweoweow\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\meoweoweow\\source\\repos\\ismanusNamai\\devicedemo\\Devicedemo\\obj\\",
         "projectStyle": "PackageReference",

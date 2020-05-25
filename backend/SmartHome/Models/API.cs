@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 
 namespace SmartHome.Models
 {
-    public class API
+    public class API : IAPI
     {
-        public HttpResponseMessage SetState(HttpClient httpClient, string url, string deviceJSON)
+
+        public virtual async Task<String> GetData(HttpClient httpClient, string endpoint)
         {
-            var response = httpClient.PostAsync(url + "/api/device", new StringContent(deviceJSON, Encoding.UTF8, "application/json"));
+            string response = await httpClient.GetStringAsync("api/device");
+
+            return response;
+        }
+
+        public virtual HttpResponseMessage SetData(HttpClient httpClient, string AddressUrl, string deviceJSON)
+        {
+            var response = httpClient.PostAsync(AddressUrl + "/api/device", new StringContent(deviceJSON, Encoding.UTF8, "application/json"));
             Console.WriteLine(response);
 
             return response.Result;

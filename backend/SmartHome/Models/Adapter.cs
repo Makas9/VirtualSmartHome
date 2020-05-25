@@ -6,13 +6,17 @@ using Newtonsoft.Json;
 
 namespace SmartHome.Models
 {
-    public class Adapter : IFeature
+    public class Adapter : API, IFeature
     {
-        API api;
 
-        public Adapter()
+        public override Task<string> GetData(HttpClient httpClient, string endpoint)
         {
-            api = new API();
+            return base.GetData(httpClient, endpoint);
+        }
+
+        public override HttpResponseMessage SetData(HttpClient httpClient, string AddressUrl, string deviceJSON)
+        {
+            return base.SetData(httpClient, null, deviceJSON);
         }
 
         public HttpResponseMessage TurnOff(Device device, HttpClient httpClient)
@@ -20,7 +24,7 @@ namespace SmartHome.Models
             device.State = DeviceState.Off;
             var json = JsonConvert.SerializeObject(device);
 
-            return api.SetState(httpClient, UrlBuilder(device.IpAddress, device.Port), json);
+            return SetData(httpClient, UrlBuilder(device.IpAddress, device.Port), json);
         }
 
         public HttpResponseMessage TurnOn(Device device, HttpClient httpClient)
@@ -28,7 +32,7 @@ namespace SmartHome.Models
             device.State = DeviceState.On;
             var json = JsonConvert.SerializeObject(device);
 
-            return api.SetState(httpClient, UrlBuilder(device.IpAddress, device.Port), json);
+            return SetData(httpClient, UrlBuilder(device.IpAddress, device.Port), json);
         }
 
         public string UrlBuilder(string address, int port)

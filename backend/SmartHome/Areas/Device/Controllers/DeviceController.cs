@@ -260,7 +260,6 @@ namespace SmartHome.Device.Controllers
 
         async public void ExecuteScene(int sceneID)
         {
-            Console.WriteLine(sceneID);
             Scenario scenarioData = Scenario.GetScenario(_context, sceneID);
             if (scenarioData == null)
             {
@@ -288,7 +287,6 @@ namespace SmartHome.Device.Controllers
             }
             string[] lines = scenario.Split(new char[] { '\n', '\r', '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             // Start log thread
-            int id = scenarioData.DeviceId;
             Thread t = new Thread(() => Log($"started excecuting scenario: URL={scenarioData.EventURL}, ID={scenarioData.Id}"));
             t.Start();
 
@@ -298,10 +296,10 @@ namespace SmartHome.Device.Controllers
                 switch (lines[i].ToLower())
                 {
                     case "turnon":
-                        await TurnOn(id);
+                        await TurnOn(scenarioData.DeviceId);
                         break;
                     case "turnoff":
-                        await TurnOff(id);
+                        await TurnOff(scenarioData.DeviceId);
                         break;
                 }
             }

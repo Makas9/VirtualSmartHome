@@ -18,7 +18,6 @@ namespace SmartHome.Areas.Device.Controllers
 
         public void IterateScenarios()
         {
-            Console.WriteLine("Kazkas vyksta1");
             var deviceController = new DeviceController(_context);
             DateTime currentTime = DateTime.Now;
             List<Models.Scenario> scenarios = _context.Scenarios.ToList();
@@ -28,7 +27,6 @@ namespace SmartHome.Areas.Device.Controllers
                 if (DateTime.Compare(scenario.TimeOfEvent, DateTime.Now) < 0)
                 {
                     deviceController.ExecuteScene(scenario.Id);
-                    Console.WriteLine("Kazkas vyksta");
                 }
             }
         }

@@ -24,8 +24,10 @@ namespace SmartHome.Device.Controllers
         private readonly SmartHomeDbContext _context;
         private HttpClient _httpClient;
         private HttpClientHandler clientHandler = new HttpClientHandler();
+        private Adapter _adapter = new Adapter();
         private const string _ViewPath = "../";
         private const string _ControllerPath = "device/device/";
+
 
         public DeviceController(SmartHomeDbContext context)
         {
@@ -215,11 +217,7 @@ namespace SmartHome.Device.Controllers
             var device = await _context.Devices.Include(d => d.Room).FirstOrDefaultAsync(d => d.Id == deviceID);
             if (state == DeviceState.Off)
             {
-                device.State = DeviceState.On;
-                var json = JsonConvert.SerializeObject(device);
-
-                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port) + "/api/device", new StringContent(json, Encoding.UTF8, "application/json"));
-                Console.WriteLine(response);
+                var response = _adapter.TurnOn(device, _httpClient);
                     
                 if (response.IsSuccessStatusCode)
                 {
@@ -245,11 +243,7 @@ namespace SmartHome.Device.Controllers
             var device = await _context.Devices.Include(d => d.Room).FirstOrDefaultAsync(d => d.Id == deviceID);
             if (state == DeviceState.On)
             {
-                device.State = DeviceState.Off;
-                var json = JsonConvert.SerializeObject(device);
-
-                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port) + "/api/device", new StringContent(json, Encoding.UTF8, "application/json"));
-                Console.WriteLine(response);
+                var response = _adapter.TurnOff(device, _httpClient);
 
                 if (response.IsSuccessStatusCode)
                 {

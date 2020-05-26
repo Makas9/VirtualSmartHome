@@ -8,17 +8,6 @@ namespace SmartHome.Models
 {
     public class Adapter : API, IFeature
     {
-
-        public override Task<string> GetData(HttpClient httpClient, string endpoint)
-        {
-            return base.GetData(httpClient, endpoint);
-        }
-
-        public override HttpResponseMessage SetData(HttpClient httpClient, string AddressUrl, string deviceJSON)
-        {
-            return base.SetData(httpClient, null, deviceJSON);
-        }
-
         public HttpResponseMessage TurnOff(Device device, HttpClient httpClient)
         {
             device.State = DeviceState.Off;

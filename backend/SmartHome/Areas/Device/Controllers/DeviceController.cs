@@ -258,7 +258,7 @@ namespace SmartHome.Device.Controllers
             return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = device.RoomId });
         }
 
-        async public void ExecuteScene(int sceneID)
+        async public Task ExecuteScene(int sceneID)
         {
             Scenario scenarioData = Scenario.GetScenario(_context, sceneID);
             if (scenarioData == null)

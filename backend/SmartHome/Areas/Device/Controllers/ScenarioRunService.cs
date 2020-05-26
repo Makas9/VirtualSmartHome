@@ -16,7 +16,7 @@ namespace SmartHome.Areas.Device.Controllers
             _context = context;
         }
 
-        public void IterateScenarios()
+        public async Task IterateScenarios()
         {
             var deviceController = new DeviceController(_context);
             DateTime currentTime = DateTime.Now;
@@ -26,7 +26,7 @@ namespace SmartHome.Areas.Device.Controllers
             {
                 if (DateTime.Compare(scenario.TimeOfEvent, DateTime.Now) < 0)
                 {
-                    deviceController.ExecuteScene(scenario.Id);
+                    await deviceController.ExecuteScene(scenario.Id);
                 }
             }
         }

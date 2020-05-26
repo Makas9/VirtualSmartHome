@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace SmartHome.Models
 {
-    public class API : IAPI
+    public class API
     {
 
-        public virtual async Task<String> GetData(HttpClient httpClient, string endpoint)
+        public virtual async Task<String> GetData(HttpClient httpClient, string AddressUrl)
         {
-            string response = await httpClient.GetStringAsync("api/device");
+            string response = await httpClient.GetStringAsync(AddressUrl + "api/device");
 
             return response;
         }

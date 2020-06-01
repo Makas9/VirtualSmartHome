@@ -8,7 +8,7 @@
 
 <h1>Room Device List</h1>
 
-<a asp-area="Device" asp-controller="Device" asp-action="OpenAddDeviceWindow" asp-route-id="@Model.roomID" >New Device</a> | <a asp-area="Device" asp-controller="Scenario" asp-action="AddScenario">New Scenario</a>
+<a asp-area="Device" asp-controller="Device" asp-action="OpenAddDeviceWindow" asp-route-id="@Model.roomID" >New Device</a> | <a asp-area="Device" asp-controller="Scenario" asp-action="AddScenario" asp-route-id="@Model.roomID">New Scenario</a>
 <br />
 <ul class="list-group">
     @foreach (var device in Model.Devices)

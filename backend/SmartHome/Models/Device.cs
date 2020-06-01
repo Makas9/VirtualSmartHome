@@ -37,6 +37,29 @@ namespace SmartHome.Models
         public ICollection<Scenario> Scenarios { get; set; }
         [JsonIgnore]
         public ICollection<UserDevice> Users { get; set; }
+
+        public static List<Models.Device> SelectBelongingToRoom(SmartHomeDbContext context, int roomId)
+        {
+            return context.Devices.Where(r => r.RoomId == roomId).ToList();
+        }
+
+        public static Models.Device GetDevice(SmartHomeDbContext context, int id)
+        {
+            var d = context.Devices.Where(d => d.Id == id).ToList();
+            if (d.Count == 0)
+                return null;
+            return d[0];
+        }
+
+        public static void AddDevice(SmartHomeDbContext context, Models.Device device)
+        {
+            context.Add(device);
+        }
+
+        public static void UpdateState(SmartHomeDbContext context, Models.Device device)
+        {
+            context.Update(device);
+        }
     }
 
     public enum DeviceType

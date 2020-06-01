@@ -12,6 +12,8 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using Newtonsoft.Json;
+using System.IO;
+using System.Threading;
 
 namespace SmartHome.Device.Controllers
 {
@@ -22,8 +24,10 @@ namespace SmartHome.Device.Controllers
         private readonly SmartHomeDbContext _context;
         private HttpClient _httpClient;
         private HttpClientHandler clientHandler = new HttpClientHandler();
+        private Adapter _adapter = new Adapter();
         private const string _ViewPath = "../";
         private const string _ControllerPath = "device/device/";
+
 
         public DeviceController(SmartHomeDbContext context)
         {
@@ -51,8 +55,10 @@ namespace SmartHome.Device.Controllers
 
                 device = await GetDeviceData(device);
 
-                _context.Add(device);
+                //_context.Add(device);
+                Models.Device.AddDevice(_context, device);
                 await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = deviceData.RoomID });
             }
 
@@ -73,9 +79,10 @@ namespace SmartHome.Device.Controllers
 
         public IEnumerable<Models.Device> GetDevicesOfRoom(int roomID)
         {
-            List<Models.Device> devices = _context.Devices.Where(r => r.RoomId == roomID).ToList();
+            //List<Models.Device> devices = _context.Devices.Where(r => r.RoomId == roomID).ToList();
+            //return DeviceState;
 
-            return devices;
+            return Models.Device.SelectBelongingToRoom(_context, roomID);
         }
 
         [HttpGet(_ControllerPath + "OpenRoomDeviceList/{roomID}")]
@@ -211,17 +218,14 @@ namespace SmartHome.Device.Controllers
             var device = await _context.Devices.Include(d => d.Room).FirstOrDefaultAsync(d => d.Id == deviceID);
             if (state == DeviceState.Off)
             {
-                device.State = DeviceState.On;
-                var json = JsonConvert.SerializeObject(device);
-
-                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port) + "/api/device", new StringContent(json, Encoding.UTF8, "application/json"));
-                Console.WriteLine(response);
+                var response = _adapter.TurnOn(device, _httpClient);
                     
                 if (response.IsSuccessStatusCode)
                 {
                     var deviceInfo = JsonConvert.DeserializeObject<Models.Device>(await response.Content.ReadAsStringAsync());
                     device.State = deviceInfo.State;
-                    _context.Update(device);
+                    //_context.Update(device);
+                    Models.Device.UpdateState(_context, device);
                     await _context.SaveChangesAsync();
                 }
             }
@@ -240,26 +244,84 @@ namespace SmartHome.Device.Controllers
             var device = await _context.Devices.Include(d => d.Room).FirstOrDefaultAsync(d => d.Id == deviceID);
             if (state == DeviceState.On)
             {
-                device.State = DeviceState.Off;
-                var json = JsonConvert.SerializeObject(device);
-
-                var response = await _httpClient.PostAsync(UrlBuilder(device.IpAddress, device.Port) + "/api/device", new StringContent(json, Encoding.UTF8, "application/json"));
-                Console.WriteLine(response);
+                var response = _adapter.TurnOff(device, _httpClient);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var deviceInfo = JsonConvert.DeserializeObject<Models.Device>(await response.Content.ReadAsStringAsync());
                     device.State = deviceInfo.State;
-                    _context.Update(device);
+                    //_context.Update(device);
+                    Models.Device.UpdateState(_context, device);
                     await _context.SaveChangesAsync();
                 }
             }
             return RedirectToAction(nameof(OpenRoomDeviceList), new { roomID = device.RoomId });
         }
 
-        public void Log()
+        async public Task ExecuteScene(int sceneID)
         {
-            // TODO
+            Scenario scenarioData = Scenario.GetScenario(_context, sceneID);
+            if (scenarioData == null)
+            {
+                LogError($"scenario with ID={sceneID} does not exist");
+                return;
+            }
+            
+            Models.Device deviceData = Models.Device.GetDevice(_context, scenarioData.DeviceId);
+            if (deviceData == null)
+            {
+                LogError($"device with ID={scenarioData.DeviceId} does not exist");
+                return;
+            }
+            
+            string scenario;
+            try
+            {
+                using (var wc = new System.Net.WebClient())
+                    scenario = wc.DownloadString(scenarioData.EventURL);
+            }
+            catch
+            {
+                LogError($"failed to connect to {scenarioData.EventURL}");
+                return;
+            }
+            string[] lines = scenario.Split(new char[] { '\n', '\r', '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Start log thread
+            Thread t = new Thread(() => Log($"started excecuting scenario: URL={scenarioData.EventURL}, ID={scenarioData.Id}"));
+            t.Start();
+
+            // Execute scenario
+            for (int i = 1; i < lines.Length; i++)
+            {
+                switch (lines[i].ToLower())
+                {
+                    case "turnon":
+                        await TurnOn(scenarioData.DeviceId);
+                        break;
+                    case "turnoff":
+                        await TurnOff(scenarioData.DeviceId);
+                        break;
+                }
+            }
+
+            // Wait for log to finish
+            t.Join();
+        }
+
+        public void Log(string message)
+        {
+            using (var f = new StreamWriter("scenario.log", true, Encoding.UTF8))
+            {
+                f.Write($"{DateTime.Now}: {message};\n");
+            }
+        }
+
+        public void LogError(string message)
+        {
+            using (var f = new StreamWriter("scenario.log", true, Encoding.UTF8))
+            {
+                f.Write($"{DateTime.Now}: ERROR {message};\n");
+            }
         }
     }
 }

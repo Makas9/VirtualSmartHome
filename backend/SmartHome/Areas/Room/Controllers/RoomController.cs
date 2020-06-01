@@ -51,11 +51,11 @@ namespace SmartHome.Room.Controllers
 
         public IEnumerable<Models.Room> GetRoomList()
         {
-            var rooms = _context.Rooms.Include(r => r.House).ToList();
+            //var rooms = _context.Rooms.Include(r => r.House).ToList();
 
             // todo: kai bus vartotojas atrinkt pagal prisijungusio vartotojo namus
-
-            return rooms;
+            //return rooms;
+            return Models.Room.Select(_context);
         }
 
         public ActionResult OpenRoomAddWindow()
@@ -78,7 +78,8 @@ namespace SmartHome.Room.Controllers
             room.HouseId = 1; // Pridedam prie pirmo namo del demo
             if (ValidateRoomData(room))
             {
-                _context.Add(room);
+                //_context.Add(room);
+                Models.Room.AddRoom(_context, room);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(RoomList));
             }

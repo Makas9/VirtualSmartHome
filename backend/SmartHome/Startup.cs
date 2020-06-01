@@ -12,6 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using SmartHome.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using SmartHome.Device.Controllers;
+using SmartHome.Areas.Device.Controllers;
 
 namespace SmartHome
 {
@@ -29,6 +33,14 @@ namespace SmartHome
         {
             services.AddDbContextPool<SmartHomeDbContext>(options => options.UseMySql(Configuration.GetConnectionString("SmartHomeDBConnection")));
 
+            services.AddHangfire(config =>
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeSerializer()
+                .UseMemoryStorage());
+
+            services.AddHangfireServer();
+
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.AreaViewLocationFormats.Clear();
@@ -39,6 +51,8 @@ namespace SmartHome
 
             services.AddControllersWithViews();
 
+            services.AddTransient<IScenarioRunService, ScenarioRunService>();
+
             services.AddDistributedMemoryCache();
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);//You can set Time   
@@ -47,7 +61,7 @@ namespace SmartHome
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBackgroundJobClient backgroundJobClient, IRecurringJobManager recurringJobManager, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -89,6 +103,14 @@ namespace SmartHome
                     name: "default",
                     pattern: "{area=Resident}/{controller=User}/{action=UserLogin}/{id?}");
             });
+
+            app.UseHangfireDashboard();
+
+            recurringJobManager.AddOrUpdate(
+                "Iterates through scenarios every minute",
+                () => serviceProvider.GetService<IScenarioRunService>().IterateScenarios(),
+                "* * * * *"
+                );
         }
     }
 }
